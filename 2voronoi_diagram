@@ -85,7 +85,7 @@ def draw_voronoi():
     for ridge_points, color in zip(vor.ridge_points, vor.ridge_vertices):
         point1, point2 = vor.vertices[color[0]], vor.vertices[color[1]]
         if -1 not in ridge_points and len(ridge_points) > 0:
-            pygame.draw.line(screen, LIGHT_BLUE if ridge_points[0] < len(players['team1']) else LIGHT_RED, point1, point2, 1)
+            pygame.draw.line(screen, (0, 0, 0), point1, point2, 1)
 
 # Main loop
 running = True

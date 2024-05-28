@@ -49,6 +49,13 @@ def draw_field():
     # Right goal area
     pygame.draw.rect(screen, LINE_COLOR, (WIDTH - 70, HEIGHT // 2 - 50, 20, 100), LINE_WIDTH)
 
+    # Draw grey point at the intersection of corners
+    pygame.draw.circle(screen, (150, 150, 150), (50, 50), 5)
+    pygame.draw.circle(screen, (150, 150, 150), (WIDTH - 50, 50), 5)
+    pygame.draw.circle(screen, (150, 150, 150), (WIDTH - 50, HEIGHT - 50), 5)
+    pygame.draw.circle(screen, (150, 150, 150), (50, HEIGHT - 50), 5)
+
+
 def draw_players():
     for player in players['team1']:
         pygame.draw.circle(screen, BLUE, player[:2], PLAYER_RADIUS)

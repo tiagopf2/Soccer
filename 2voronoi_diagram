@@ -1,8 +1,9 @@
+# Written by Tiago Perez
+
 import pygame
 import sys
 import numpy as np
-from scipy.spatial import Voronoi, voronoi_plot_2d
-import matplotlib.pyplot as plt
+from scipy.spatial import Voronoi
 
 # Initialize Pygame
 pygame.init()
@@ -12,18 +13,21 @@ WIDTH, HEIGHT = 800, 600
 BACKGROUND_COLOR = (34, 177, 76)  # Green field
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
-LIGHT_BLUE = (150, 150, 255)  # Lighter shade of blue
 RED = (255, 0, 0)
-LIGHT_RED = (255, 150, 150)  # Lighter shade of red
 BALL_COLOR = (255, 255, 0)
 PLAYER_RADIUS = 15
 BALL_RADIUS = 10
 LINE_COLOR = WHITE
 LINE_WIDTH = 2
+GREY_POINT_COLOR = (150, 150, 150)
+GREY_POINT_RADIUS = 5
 
 # Create the screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Soccer Tactics Board')
+
+# Font
+font = pygame.font.Font(None, 20)
 
 # Player and ball positions with numbers
 players = {
@@ -33,6 +37,9 @@ players = {
               (350, 250, 6), (400, 200, 7), (450, 150, 8), (500, 100, 9), (550, 50, 10), (600, 500, 11)],
     'ball': [(WIDTH // 2, HEIGHT // 2)]  # Store ball position as a list with one tuple
 }
+
+# Grey points (boundary points for Voronoi diagram)
+grey_points = [(50, 50), (WIDTH - 50, 50), (WIDTH - 50, HEIGHT - 50), (50, HEIGHT - 50)]
 
 selected = None
 
@@ -49,25 +56,20 @@ def draw_field():
     # Right goal area
     pygame.draw.rect(screen, LINE_COLOR, (WIDTH - 70, HEIGHT // 2 - 50, 20, 100), LINE_WIDTH)
 
-    # Draw grey point at the intersection of corners
-    pygame.draw.circle(screen, (150, 150, 150), (50, 50), 5)
-    pygame.draw.circle(screen, (150, 150, 150), (WIDTH - 50, 50), 5)
-    pygame.draw.circle(screen, (150, 150, 150), (WIDTH - 50, HEIGHT - 50), 5)
-    pygame.draw.circle(screen, (150, 150, 150), (50, HEIGHT - 50), 5)
-
+    # Draw grey points at the corners
+    for point in grey_points:
+        pygame.draw.circle(screen, GREY_POINT_COLOR, point, GREY_POINT_RADIUS)
 
 def draw_players():
     for player in players['team1']:
         pygame.draw.circle(screen, BLUE, player[:2], PLAYER_RADIUS)
         # Draw player number
-        font = pygame.font.Font(None, 20)
         text = font.render(str(player[2]), True, WHITE)
         text_rect = text.get_rect(center=player[:2])
         screen.blit(text, text_rect)
     for player in players['team2']:
         pygame.draw.circle(screen, RED, player[:2], PLAYER_RADIUS)
         # Draw player number
-        font = pygame.font.Font(None, 20)
         text = font.render(str(player[2]), True, WHITE)
         text_rect = text.get_rect(center=player[:2])
         screen.blit(text, text_rect)
@@ -84,15 +86,13 @@ def get_selected(pos):
 
 # Function to compute and draw Voronoi diagram
 def draw_voronoi():
-    # Extend the field boundaries to encompass the entire screen
-    points = [(0, 0), (WIDTH, 0), (WIDTH, HEIGHT), (0, HEIGHT)]
-    for player in players['team1'] + players['team2']:
-        points.append(player[:2])
+    points = [player[:2] for player in players['team1']] + [player[:2] for player in players['team2']]
+    points.extend(grey_points)
     vor = Voronoi(points)
-    for ridge_points, color in zip(vor.ridge_points, vor.ridge_vertices):
-        point1, point2 = vor.vertices[color[0]], vor.vertices[color[1]]
-        if -1 not in ridge_points and len(ridge_points) > 0:
-            pygame.draw.line(screen, (0, 0, 0), point1, point2, 1)
+    for simplex in vor.ridge_vertices:
+        simplex = np.asarray(simplex)
+        if np.all(simplex >= 0):
+            pygame.draw.line(screen, (0, 0, 0), vor.vertices[simplex[0]], vor.vertices[simplex[1]], 1)
 
 # Main loop
 running = True

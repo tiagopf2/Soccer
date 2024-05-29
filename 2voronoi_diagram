@@ -9,7 +9,7 @@ from scipy.spatial import Voronoi
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1200, 800
 BACKGROUND_COLOR = (34, 177, 76)  # Green field
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
@@ -31,11 +31,10 @@ font = pygame.font.Font(None, 20)
 
 # Player and ball positions with numbers
 players = {
-    'team1': [(51, 300, 1), (250, 500, 2), (250, 100, 3), (150, 200, 4), (150, 400, 5),
-              (300, 300, 6), (600, 100, 7), (450, 200, 8), (650, 300, 9), (450, 400, 10), (600, 500, 11)],
-    'team2': [(749, 300, 1), (550, 500, 2), (550, 100, 3), (600, 200, 4), (600, 400, 5),
-              (500, 300, 6), (400, 100, 7), (400, 200, 8), (150, 300, 9), (400, 400, 10), (300, 450, 11)],
-    'ball': [(WIDTH // 3, HEIGHT // 3)]  # Store ball position as a list with one tuple
+    'team1': [(76, 400, 1), (375, 667, 2), (375, 133, 3), (225, 267, 4), (225, 533, 5),
+              (450, 400, 6), (900, 133, 7), (675, 267, 8), (975, 400, 9), (675, 533, 10), (900, 667, 11)],
+    'team2': [(1124, 400, 1), (825, 667, 2), (825, 133, 3), (900, 267, 4), (900, 533, 5),
+              (750, 400, 6), (600, 133, 7), (600, 267, 8), (225, 400, 9), (600, 533, 10), (450, 600, 11)],        'ball': [(WIDTH // 3, HEIGHT // 3)]  # Store ball position as a list with one tuple
 }
 
 # Grey points (boundary points for Voronoi diagram)
@@ -245,4 +244,4 @@ while running:
 
 pygame.quit()
 sys.exit()
-                  
+            

@@ -15,7 +15,7 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
 BALL_COLOR = (255, 255, 0)
-PLAYER_RADIUS = 15
+PLAYER_RADIUS = 17
 BALL_RADIUS = 10
 LINE_COLOR = WHITE
 LINE_WIDTH = 2
@@ -27,7 +27,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Soccer Tactics Board')
 
 # Font
-font = pygame.font.Font(None, 20)
+font_size = 25
+font = pygame.font.Font(None, font_size)
 
 # Player and ball positions with numbers
 players = {
@@ -244,4 +245,3 @@ while running:
 
 pygame.quit()
 sys.exit()
-            

@@ -1,4 +1,3 @@
-# Game data.
 # Written by Tiago Perez
 
 import csv

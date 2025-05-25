@@ -1,3 +1,5 @@
+# Written by Tiago Perez
+
 import pygame
 import sys
 import numpy as np

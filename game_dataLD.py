@@ -1,3 +1,5 @@
+# Written by Tiago Perez
+
 import csv
 
 class GameData:
